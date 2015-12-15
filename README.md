@@ -1,5 +1,7 @@
 # EXEL::S3
 
+[![Build Status](https://snap-ci.com/47colborne/exel-s3/branch/master/build_image)](https://snap-ci.com/47colborne/exel-s3/branch/master)
+
 TODO: Write a gem description
 
 ## Installation
