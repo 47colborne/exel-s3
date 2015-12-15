@@ -1,3 +1,5 @@
+require 'aws-sdk-resources'
+
 module EXEL
   module S3
     class S3Provider
