@@ -1,5 +1,6 @@
 # EXEL::S3
 
+[![Gem Version](https://badge.fury.io/rb/exel-s3.svg)](https://badge.fury.io/rb/exel-s3)
 [![Build Status](https://snap-ci.com/47colborne/exel-s3/branch/master/build_image)](https://snap-ci.com/47colborne/exel-s3/branch/master)
 
 This gem implements a "remote provider" for [EXEL](https://github.com/47colborne/exel) using Amazon S3. The remote provider is used when an async command is executed and a context shift occurs. Its job is to move the context to a remote storage location when the async call is initiated, and retrieve it before the async block is executed.
