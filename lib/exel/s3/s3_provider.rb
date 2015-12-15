@@ -30,6 +30,10 @@ module EXEL
         s3.bucket(EXEL.configuration.s3_bucket).object(filename)
       end
 
+      def self.remote?(uri)
+        uri =~ %r{s3://}
+      end
+
       private
 
       def get_filename(file)

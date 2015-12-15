@@ -45,6 +45,18 @@ module EXEL
           expect(subject.download('s3://abc.txt')).to eq(file)
         end
       end
+
+      describe '.remote?' do
+        it 'returns true for file:// URIs' do
+          expect(S3Provider.remote?('s3://file')).to be_truthy
+        end
+
+        it 'returns false for anything else' do
+          expect(S3Provider.remote?('file://path/to/file')).to be_falsey
+          expect(S3Provider.remote?(1)).to be_falsey
+          expect(S3Provider.remote?(nil)).to be_falsey
+        end
+      end
     end
   end
 end
