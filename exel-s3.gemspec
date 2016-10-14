@@ -30,6 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'terminal-notifier', '~> 1'
   spec.add_development_dependency 'terminal-notifier-guard', '~> 1'
   spec.add_development_dependency 'rubocop', '~> 0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1'
   spec.add_development_dependency 'rubocop-rspec-focused', '~> 0'
 end
