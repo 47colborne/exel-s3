@@ -19,6 +19,8 @@ module EXEL
         obj.get(response_target: file)
         file.set_encoding(Encoding::UTF_8)
         file
+      rescue Aws::S3::Errors::NoSuchKey => e
+        raise EXEL::Error::JobTermination, "Aws::S3::Errors::NoSuchKey: #{e.message}"
       end
 
       def get_object(filename)

@@ -1,14 +1,14 @@
 module EXEL
   module S3
     describe S3Provider do
-      describe '#get_object' do
-        before do
-          EXEL.configure do |config|
-            config.aws = OpenStruct.new
-            config.s3_bucket = 'bucket'
-          end
+      before :all do
+        EXEL.configure do |config|
+          config.aws = OpenStruct.new
+          config.s3_bucket = 'bucket'
         end
+      end
 
+      describe '#get_object' do
         it 'has the correct bucket and file names' do
           file_name = 'abc.txt'
           s3_obj = subject.get_object(file_name)
@@ -33,16 +33,27 @@ module EXEL
       end
 
       describe '#download' do
-        it 'downloads the file from s3' do
-          file = double(:file)
-          s3_object = double(:s3_object)
+        let(:file) { double(:file) }
+        let(:s3_object) { double(:s3_object) }
 
-          expect(subject).to receive(:get_object).with('abc.txt').and_return(s3_object)
-          expect(Tempfile).to receive(:new).with('abc.txt', encoding: Encoding::ASCII_8BIT).and_return(file)
-          expect(s3_object).to receive(:get).with(hash_including(response_target: file)).and_return(file)
-          expect(file).to receive(:set_encoding).with(Encoding::UTF_8)
+        before do
+          allow(subject).to receive(:get_object).with('abc.txt').and_return(s3_object)
+          allow(Tempfile).to receive(:new).with('abc.txt', encoding: Encoding::ASCII_8BIT).and_return(file)
+        end
+
+        it 'downloads the file from s3' do
+          allow(s3_object).to receive(:get).with(hash_including(response_target: file)).and_return(file)
+          allow(file).to receive(:set_encoding).with(Encoding::UTF_8)
 
           expect(subject.download('s3://abc.txt')).to eq(file)
+        end
+
+        context 'when s3 object does not exist' do
+          it 'raises an EXEL::Error:JobTermination error' do
+            allow(s3_object).to receive(:get).and_raise(Aws::S3::Errors::NoSuchKey.new(nil, 'key'))
+
+            expect { subject.download('s3://abc.txt') }.to raise_error EXEL::Error::JobTermination
+          end
         end
       end
 
