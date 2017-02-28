@@ -5,6 +5,7 @@ module EXEL
         EXEL.configure do |config|
           config.aws = OpenStruct.new
           config.s3_bucket = 'bucket'
+          config.s3_region = 's3-region'
         end
       end
 
@@ -14,6 +15,17 @@ module EXEL
           s3_obj = subject.get_object(file_name)
           expect(s3_obj.bucket_name).to eq('bucket')
           expect(s3_obj.key).to eq(file_name)
+        end
+
+        it 'uses the configured s3 region' do
+          expect(Aws::S3::Resource).to receive(:new).with(hash_including(region: 's3-region')).and_call_original
+          subject.get_object('foo.txt')
+        end
+
+        it 'defaults the s3 region to us-east-1' do
+          allow(EXEL.configuration).to receive(:s3_region).and_return(nil)
+          expect(Aws::S3::Resource).to receive(:new).with(hash_including(region: 'us-east-1')).and_call_original
+          subject.get_object('foo.txt')
         end
       end
 

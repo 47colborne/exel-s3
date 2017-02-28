@@ -34,6 +34,7 @@ The following configuration must be provided:
         )
       
         config.s3_bucket = 'the name of the bucket to use'
+        config.s3_region = 'us-east-1' # default
     end
 
 ## Contributing

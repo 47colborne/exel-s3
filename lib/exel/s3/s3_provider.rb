@@ -29,7 +29,7 @@ module EXEL
             EXEL.configuration.aws.access_key_id,
             EXEL.configuration.aws.secret_access_key
           ),
-          region: 'us-east-1'
+          region: EXEL.configuration.s3_region || 'us-east-1'
         )
         s3.bucket(EXEL.configuration.s3_bucket).object(filename)
       end
